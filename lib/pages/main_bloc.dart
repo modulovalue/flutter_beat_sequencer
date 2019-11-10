@@ -19,13 +19,33 @@ class PlaybackBloc extends HookBloc implements Playable {
   Wave<bool> metronomeStatus;
 
   PlaybackBloc() {
-    final kick = TrackBloc(32, SoundSelector.kick());
-    final hat = TrackBloc(32, SoundSelector.hat());
-    final clap = TrackBloc(32, SoundSelector.clap());
-    tracks = [kick, hat, clap];
-    disposeLater(kick.dispose);
-    disposeLater(hat.dispose);
-    disposeLater(clap.dispose);
+    tracks = [
+      TrackBloc(32, SoundSelector("808", () {
+        js.context["bass"].callMethod("play");
+      })),
+      TrackBloc(32, SoundSelector("Clap", () {
+        js.context["clap"].callMethod("play");
+      })),
+      TrackBloc(32, SoundSelector("Hat", () {
+        js.context["hat"].callMethod("play");
+      })),
+      TrackBloc(32, SoundSelector("Open Hat", () {
+        js.context["open_hat"].callMethod("play");
+      })),
+      TrackBloc(32, SoundSelector("Kick 1", () {
+        js.context["kick"].callMethod("play");
+      })),
+      TrackBloc(32, SoundSelector("Kick 2", () {
+        js.context["kick2"].callMethod("play");
+      })),
+      TrackBloc(32, SoundSelector("Snare 1", () {
+        js.context["snare_1"].callMethod("play");
+      })),
+      TrackBloc(32, SoundSelector("Snare 2", () {
+        js.context["snare_2"].callMethod("play");
+      })),
+    ];
+    tracks.map((a) => a.dispose).forEach(disposeLater);
     metronomeStatus = _metronomeStatus.wave;
   }
 
@@ -47,9 +67,9 @@ class PlaybackBloc extends HookBloc implements Playable {
 }
 
 class TimelineBloc extends HookBloc {
-  Signal<bool> _isPlaying = HookBloc.disposeSink(Signal(false));
-  Signal<double> _bpm = HookBloc.disposeSink(Signal(160.0 * 4.0));
-  Signal<int> _atBeat = HookBloc.disposeSink(Signal(-1));
+  final Signal<bool> _isPlaying = HookBloc.disposeSink(Signal(false));
+  final Signal<double> _bpm = HookBloc.disposeSink(Signal(160.0 * 4.0));
+  final Signal<int> _atBeat = HookBloc.disposeSink(Signal(-1));
 
   Wave<bool> isPlaying;
   Wave<double> bpm;
@@ -136,6 +156,10 @@ class TrackBloc extends HookBloc implements Playable {
     }
   }
 
+  void playPreview() {
+    sound.play();
+  }
+
   void setPattern(TrackPattern pattern) {
     _isEnabled.add(_isEnabled.value
         .asMap()
@@ -149,18 +173,5 @@ class SoundSelector {
   final String name;
   final void Function() play;
 
-  SoundSelector.kick()
-      : this.name = "Kick",
-        this.play = (() => js.context["kick"].callMethod("play"))
-  ;
-
-  SoundSelector.clap()
-      : this.name = "Clap",
-        this.play = (() => js.context["clap"].callMethod("play"))
-  ;
-
-  SoundSelector.hat()
-      : this.name = "Hat",
-        this.play = (() => js.context["hat"].callMethod("play"))
-  ;
+  const SoundSelector(this.name, this.play);
 }

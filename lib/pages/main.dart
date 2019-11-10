@@ -1,8 +1,16 @@
 import 'package:bird_flutter/bird_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beat_sequencer/pages/main_bloc.dart';
-import 'package:modulovalue_project_widgets/all.dart';
 import 'package:flutter_beat_sequencer/pages/pattern.dart';
+import 'package:flutter_beat_sequencer/widgets/title.dart';
+
+Applicator _itemClr = textColor(Colors.white) & iconProperties(
+    color: Colors.white);
+
+Applicator _sequencerStyle = padding(horizontal: 16.0)
+& card(color: Colors.brown[900])
+& padding(horizontal: 18.0, vertical: 18.0)
+;
 
 class MainPage extends StatelessWidget {
   @override
@@ -11,35 +19,44 @@ class MainPage extends StatelessWidget {
       final bloc = $$$(() => PlaybackBloc());
       final timelineBloc = $$$(() => TimelineBloc(bloc.playAtBeat));
 
-      return scaffold()
+      return scaffold(color: Colors.brown[800])
       & center()
-      & padding(all: 12.0)
       & singleChildScrollViewH()
           > onColumnMinCenterCenter()
               >> [
-                ...modulovalueTitle("Flutter Beat Sequencer", "flutter_beat_sequencer"),
+                ...
+//                (
+                    _itemClr
+//                & villainScale(
+//                    from: 1.5,
+//                    curve: Curves.easeOutCirc
+//                ).inTimeMS(1500))
+                    * modulovalueTitle(
+                        "Flutter Beat Sequencer", "flutter_beat_sequencer"),
                 verticalSpace(12.0),
                 $$ >> (context) {
                   final bpm = $(() => timelineBloc.bpm) / 4.0;
                   final playing = $(() => timelineBloc.isPlaying);
                   final metronomeStatus = $(() => bloc.metronomeStatus);
-                  return onRowMinCenterCenter() >> [
+                  return _itemClr > onRowMinCenterCenter() >> [
                     Text("BPM: $bpm"),
                     horizontalSpace(8.0),
                     flatButton(timelineBloc.togglePlayback)
+                    & _itemClr
                         > Icon(playing ? Icons.pause : Icons.play_arrow),
                     flatButton(timelineBloc.stop)
+                    & _itemClr
                         > Icon(Icons.stop),
                     flatButton(bloc.toggleMetronome)
                         > (metronomeStatus
-                           ? Text("Metronome On")
-                           : Text("Metronome Off")),
+                           ? _itemClr > const Text("Metronome On")
+                           : _itemClr > const Text("Metronome Off")),
                   ];
                 },
                 _beatIndicator(timelineBloc),
-                onColumnMinStartCenter() >> bloc.tracks.map((line) {
-                  return _track(line);
-                }),
+                _sequencerStyle
+                    > onColumnMinStartCenter()
+                    >> bloc.tracks.map(_track),
               ];
     };
   }
@@ -48,16 +65,22 @@ class MainPage extends StatelessWidget {
 Widget _beatIndicator(TimelineBloc bloc) {
   return $$ >> (context) {
     final beat = $(() => bloc.atBeat);
-    return height(8.0) > onRowMin() >> [
-      width(80) > nothing,
+    return height(14.0) > onRowMin() >> [
+      width(50) > nothing,
       horizontalSpace(8.0),
       width(50) > nothing,
       horizontalSpace(8.0),
       ...List.generate(32, (i) {
-        return onTap(() => bloc.setBeat(i)) & padding(
-            horizontal: 2.0) > Container(
-          width: 32.0,
-          color: (i) == beat ? Colors.green : Colors.grey[300],
+        return onTap(() => bloc.setBeat(i - 1)) & padding(
+            horizontal: 4.0)
+//        & villainScale(from: 1.35, key: i == beat)
+//            .inTimeMS(100)
+            > Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5.0),
+            color: i == beat ? Colors.white : Colors.white.withOpacity(0.05),
+          ),
+          width: 28.0,
         );
       }),
     ];
@@ -68,12 +91,8 @@ Widget _track(TrackBloc bloc) {
   return $$ >> (context) {
     final enabled = $(() => bloc.isEnabled);
     return height(42.0) > onRowMin() >> [
-      width(80)
-          > RaisedButton(
-        color: Colors.white,
-        child: Text(bloc.sound.name),
-        onPressed: null,
-      ),
+      width(50)
+      & _itemClr > Text(bloc.sound.name),
       horizontalSpace(8.0),
       width(50.0) & iconButton(() {
         showDialog<void>(
@@ -84,18 +103,18 @@ Widget _track(TrackBloc bloc) {
                 content: singleChildScrollView() > onColumnMinStartCenter() >> [
                   ...allPatterns().map((pattern) {
                     return ListTile(
-                        title: Text(pattern.name),
-                        onTap: () {
-                          bloc.setPattern(pattern);
-                          Navigator.of(context).pop();
-                        },
+                      title: Text(pattern.name),
+                      onTap: () {
+                        bloc.setPattern(pattern);
+                        Navigator.of(context).pop();
+                      },
                     );
                   }),
                 ],
               );
             }
         );
-      }) > Icon(Icons.more_horiz),
+      }) & _itemClr > Icon(Icons.more_horiz),
       horizontalSpace(8.0),
       ...enabled
           .asMap()
@@ -112,7 +131,6 @@ Widget _track(TrackBloc bloc) {
 }
 
 class TrackStep extends StatelessWidget {
-
   final bool selected;
   final int beat;
   final void Function() onPressed;
@@ -127,13 +145,14 @@ class TrackStep extends StatelessWidget {
   Widget build(BuildContext context) {
     return onTap(onPressed)
     & padding(horizontal: 2.0)
+//    & villainScale(from: 1.5, key: selected, curve: Curves.bounceOut)
         > Container(
           width: 32.0,
           height: 32.0,
           decoration: BoxDecoration(
-            color: selected ? Colors.grey[900] :
-                   ((beat % 4 == 0 ? Colors.grey[300]
-                     : Colors.grey[200])),
+            color: selected ? Colors.white :
+                   (beat % 4 == 0 ? Colors.white.withOpacity(0.15)
+                    : Colors.white.withOpacity(0.07)),
             borderRadius: BorderRadius.circular(24.0),
           ),
         );
