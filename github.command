@@ -1,0 +1,1 @@
+open "https://www.github.com/modulovalue/$(basename "$(dirname "$0")")"
