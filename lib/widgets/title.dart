@@ -28,7 +28,7 @@ Iterable<Widget> modulovalueTitle(String title, String repo) {
         textAlign: TextAlign.center,
       ),
     ),
-    SizedBox(height: 4.0),
+    const SizedBox(height: 4.0),
     GestureDetector(
       onTap: () => js.context
           .callMethod("open", <dynamic>["https://github.com/modulovalue/$repo"]),

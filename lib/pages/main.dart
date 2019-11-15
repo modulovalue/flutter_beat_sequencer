@@ -25,14 +25,10 @@ class MainPage extends StatelessWidget {
           > onColumnMinCenterCenter()
               >> [
                 ...
-//                (
-                    _itemClr
-//                & villainScale(
-//                    from: 1.5,
-//                    curve: Curves.easeOutCirc
-//                ).inTimeMS(1500))
-                    * modulovalueTitle(
-                        "Flutter Beat Sequencer", "flutter_beat_sequencer"),
+                _itemClr * modulovalueTitle(
+                  "Flutter Beat Sequencer",
+                  "flutter_beat_sequencer",
+                ),
                 verticalSpace(12.0),
                 $$ >> (context) {
                   final bpm = $(() => timelineBloc.bpm) / 4.0;
@@ -71,17 +67,16 @@ Widget _beatIndicator(TimelineBloc bloc) {
       width(50) > nothing,
       horizontalSpace(8.0),
       ...List.generate(32, (i) {
-        return onTap(() => bloc.setBeat(i - 1)) & padding(
-            horizontal: 4.0)
-//        & villainScale(from: 1.35, key: i == beat)
-//            .inTimeMS(100)
+        return onTap(() => bloc.setBeat(i - 1))
+        & padding(horizontal: 4.0)
             > Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5.0),
-            color: i == beat ? Colors.white : Colors.white.withOpacity(0.05),
-          ),
-          width: 28.0,
-        );
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.0),
+                color: i == beat ? Colors.white :
+                       Colors.white.withOpacity(0.05),
+              ),
+              width: 28.0,
+            );
       }),
     ];
   };
@@ -91,8 +86,11 @@ Widget _track(TrackBloc bloc) {
   return $$ >> (context) {
     final enabled = $(() => bloc.isEnabled);
     return height(42.0) > onRowMin() >> [
-      width(50)
-      & _itemClr > Text(bloc.sound.name),
+
+      onTap(bloc.sound.play)
+      & width(50)
+      & _itemClr
+          > Text(bloc.sound.name),
       horizontalSpace(8.0),
       width(50.0) & iconButton(() {
         showDialog<void>(
@@ -145,7 +143,6 @@ class TrackStep extends StatelessWidget {
   Widget build(BuildContext context) {
     return onTap(onPressed)
     & padding(horizontal: 2.0)
-//    & villainScale(from: 1.5, key: selected, curve: Curves.bounceOut)
         > Container(
           width: 32.0,
           height: 32.0,

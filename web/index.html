@@ -7,18 +7,18 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
-    gtag('config', 'UA-50057105-4');
-  </script>
-  <meta charset="UTF-8">
-  <title>Flutter Web Beat Sequencer</title>
+        gtag('config', 'UA-50057105-4');
+    </script>
+    <meta charset="UTF-8">
+    <title>Flutter Web Beat Sequencer</title>
 </head>
 <body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.4.9/Tone.js" type="application/javascript"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.core.min.js" type="application/javascript"></script>
-  <script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.4.9/Tone.js" type="application/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.core.min.js" type="application/javascript"></script>
+<script>
     function playSound(note, duration) {
-      var synth = new Tone.Synth().toDestination();
-      synth.triggerAttackRelease(note, duration);
+        var synth = new Tone.Synth().toDestination();
+        synth.triggerAttackRelease(note, duration);
     }
     var bass = new Howl({src: ['assets/assets/sounds/bass.wav'], volume: 1.0});
     var clap = new Howl({src: ['assets/assets/sounds/clap_2.wav'], volume: 1.0});
@@ -28,7 +28,7 @@
     var kick2 = new Howl({src: ['assets/assets/sounds/kick_2.wav'], volume: 1.0});
     var snare_1 = new Howl({src: ['assets/assets/sounds/snare_1.wav'], volume: 1.0});
     var snare_2 = new Howl({src: ['assets/assets/sounds/snare_2.wav'], volume: 1.0});
-  </script>
-  <script src="main.dart.js" type="application/javascript"></script>
+</script>
+<script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>
