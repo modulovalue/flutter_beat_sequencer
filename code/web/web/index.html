@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-50057105-4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+        gtag('config', 'UA-50057105-4');
+    </script>
+    <meta charset="UTF-8">
+    <title>Flutter Web Beat Sequencer</title>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.core.min.js" type="application/javascript"></script>
+<script>
+    function playSound(note, duration) {
+        var synth = new Tone.Synth().toDestination();
+        synth.triggerAttackRelease(note, duration);
+    }
+
+    var bass = new Howl({src: ['assets/assets/sounds/bass.wav'], volume: 1.0});
+    var clap = new Howl({src: ['assets/assets/sounds/clap.wav'], volume: 1.0});
+    var hat = new Howl({src: ['assets/assets/sounds/hat.wav'], volume: 1.0});
+    var open_hat = new Howl({src: ['assets/assets/sounds/open_hat.wav'], volume: 1.0});
+    var kick = new Howl({src: ['assets/assets/sounds/kick.wav'], volume: 1.0});
+    var kick2 = new Howl({src: ['assets/assets/sounds/kick2.wav'], volume: 1.0});
+    var snare_1 = new Howl({src: ['assets/assets/sounds/snare_1.wav'], volume: 1.0});
+    var snare_2 = new Howl({src: ['assets/assets/sounds/snare_2.wav'], volume: 1.0});
+    var metronome_high = new Howl({src: ['assets/assets/sounds/metronome_high.wav'], volume: 1.0});
+    var metronome_low = new Howl({src: ['assets/assets/sounds/metronome_low.wav'], volume: 1.0});
+</script>
+<script src="main.dart.js" type="application/javascript"></script>
+</body>
+</html>
