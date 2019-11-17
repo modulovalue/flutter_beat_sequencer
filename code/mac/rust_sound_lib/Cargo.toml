@@ -1,0 +1,12 @@
+[package]
+name = "rusty_ffi"
+version = "0.1.0"
+authors = ["Sach97 <sacha.arbonel@hotmail.fr>"]
+edition = "2018"
+
+[lib]
+name = "play_once"
+crate-type = ["cdylib"]
+
+[dependencies]
+rodio = "0.9.0"
